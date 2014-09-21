@@ -1,11 +1,16 @@
 Summary:	SDL (Simple DirectMedia Layer) - Game/Multimedia Library
 Name:		SDL
 Version:	1.2.15
-Release:	1
+Release:	2
 License:	LGPL
 Group:		Libraries
 Source0:	http://www.libsdl.org/release/%{name}-%{version}.tar.gz
 # Source0-md5:	9d96df8417572a2afb781a7c4c811a85
+Patch0:		%{name}-x11sym.patch
+Patch1:		%{name}-disable-mmx.patch
+Patch2:		%{name}-fix-mouse-clicking.patch
+Patch3:		%{name}-resizing.patch
+Patch4:		%{name}-X11_KeyToUnicode.patch
 URL:		http://www.libsdl.org/
 BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	alsa-lib-devel
@@ -39,6 +44,11 @@ SDL - Header files.
 
 %prep
 %setup -q
+%patch0 -p0
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
 
 : > acinclude.m4
 echo 'AC_DEFUN([AM_PATH_ESD],[$3])' >> acinclude.m4
@@ -73,7 +83,7 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT \
 	m4datadir=%{_aclocaldir}
 
-rm -rf docs/man3
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -92,7 +102,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs.html docs
 %attr(755,root,root) %{_bindir}/sdl-config
 %attr(755,root,root) %{_libdir}/libSDL.so
-%{_libdir}/libSDL.la
 %{_libdir}/libSDLmain.a
 %{_includedir}/SDL
 %{_aclocaldir}/sdl.m4
