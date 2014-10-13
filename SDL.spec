@@ -1,7 +1,7 @@
 Summary:	SDL (Simple DirectMedia Layer) - Game/Multimedia Library
 Name:		SDL
 Version:	1.2.15
-Release:	2
+Release:	3
 License:	LGPL
 Group:		Libraries
 Source0:	http://www.libsdl.org/release/%{name}-%{version}.tar.gz
@@ -11,6 +11,7 @@ Patch1:		%{name}-disable-mmx.patch
 Patch2:		%{name}-fix-mouse-clicking.patch
 Patch3:		%{name}-resizing.patch
 Patch4:		%{name}-X11_KeyToUnicode.patch
+Patch5:		%{name}-do-not-drop-events-queue.patch
 URL:		http://www.libsdl.org/
 BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	alsa-lib-devel
@@ -49,6 +50,8 @@ SDL - Header files.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+# https://bugzilla.libsdl.org/show_bug.cgi?id=1859
+%patch5 -p1
 
 : > acinclude.m4
 echo 'AC_DEFUN([AM_PATH_ESD],[$3])' >> acinclude.m4
